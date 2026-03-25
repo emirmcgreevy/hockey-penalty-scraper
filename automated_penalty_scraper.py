@@ -309,9 +309,6 @@ for url in urls:
 
 df = pd.DataFrame(all_rows)
 
-from google.colab import files
-files.upload()
-
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
