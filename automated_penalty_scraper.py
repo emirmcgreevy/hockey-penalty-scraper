@@ -312,8 +312,6 @@ df = pd.DataFrame(all_rows)
 from google.colab import files
 files.upload()
 
-!pip install gspread oauth2client
-
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
