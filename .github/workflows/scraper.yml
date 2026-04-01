@@ -25,4 +25,6 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run scraper
+        env:
+          GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDS }}
         run: python automated_penalty_scraper.py
