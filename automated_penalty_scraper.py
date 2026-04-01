@@ -2,13 +2,27 @@
 import os
 import json
 from oauth2client.service_account import ServiceAccountCredentials
+import gspread
 
-creds_dict = json.loads(os.environ["GOOGLE_CREDS"])
+# Authenticate Google API
+scope = [
+    "https://spreadsheets.google.com/feeds",
+    "https://www.googleapis.com/auth/drive"
+]
 
-creds = ServiceAccountCredentials.from_json_keyfile_dict(
-    creds_dict,
-    scope
-)
+if "GOOGLE_CREDS" in os.environ:
+    creds_dict = json.loads(os.environ["GOOGLE_CREDS"])
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(
+        creds_dict,
+        scope
+    )
+else:
+    creds = ServiceAccountCredentials.from_json_keyfile_name(
+        "creds.json",
+        scope
+    )
+
+client = gspread.authorize(creds)
 
 """
 Automated Penalty Scraper.ipynb
@@ -312,26 +326,10 @@ for url in urls:
 
 df = pd.DataFrame(all_rows)
 
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
-
-# Authenticate
-scope = [
-    "https://spreadsheets.google.com/feeds",
-    "https://www.googleapis.com/auth/drive"
-]
-
-creds = ServiceAccountCredentials.from_json_keyfile_name(
-    "creds.json",  # <-- change this
-    scope
-)
-
-client = gspread.authorize(creds)
-
 # Open your sheet
 sheet = client.open("Hockey Penalties").sheet1
 
-# OPTIONAL: prevent duplicates
+# Prevent duplicates
 df = df.drop_duplicates()
 
 # Clear old data
