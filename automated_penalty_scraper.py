@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+from oauth2client.service_account import ServiceAccountCredentials
 
-if "GOOGLE_CREDS" in os.environ:
-    creds_dict = json.loads(os.environ["GOOGLE_CREDS"])
-    with open("creds.json", "w") as f:
-        json.dump(creds_dict, f)
+creds_dict = json.loads(os.environ["GOOGLE_CREDS"])
+
+creds = ServiceAccountCredentials.from_json_keyfile_dict(
+    creds_dict,
+    scope
+)
 
 """
 Automated Penalty Scraper.ipynb
